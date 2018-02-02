@@ -5,6 +5,7 @@ function createBoard() {
     createPositionsGrid();
     createHorizontalIndex();
     createVerticalIndex();
+    setPieces();
 }
 
 function createPositionsGrid() {
@@ -63,4 +64,12 @@ function createVerticalIndex() {
         vIndex.innerHTML = column;
         verticalPositions.appendChild(vIndex);
     }  
+}
+
+function setPieces() {
+    //
+}
+
+function resetGame() {
+    console.log('Restart chess game');
 }

@@ -6,14 +6,49 @@ body {
     display: inline-flex;
     height: 56px;
     width: 100%;
-    background-color: #fff59d;
-    color: #cbc26d;
+    background-color: #ffecb3;
+    color: #cbba83;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .playerTurn {
-    flex: 1; 
-    text-align: left; 
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    font-weight: 600;
+    color: #ffecb3;
+    text-align: center; 
     margin: 8px 0px 0px 16px;
+}
+
+.amountMoves {
+    position: absolute;
+    top: 50%;
+    right: 100px;
+    font-weight: 600;
+    color: #ffecb3;
+    text-align: center; 
+    margin: 16px 0px 0px 8px;
+}
+
+.resetButton {
+    position: absolute;
+    top: 670px;
+    border-radius: 48px;
+    left: 50%;
+    height: 48px;
+    width: 48px;
+    background-color: #ffecb3;
+    border: 0;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.resetButton:active {
+    background-color: #cbba83;
+}
+
+.resetButton:focus {
+    outline: none;
 }
 
 .gameTitle {
@@ -72,6 +107,10 @@ body {
     text-align: center; 
     line-height: 60px; 
     font-size: 24px;
+}
+
+.resetButton {
+    background-color: ;
 }
 
 td {
