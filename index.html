@@ -1,21 +1,38 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- Place favicon.ico in the root directory -->
-        <link rel="shortcut icon" href="favicon.ico" />
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <!-- fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Rammetto+One" rel="stylesheet">
-    </head>
-    <body>
-        <h1 style="text-align: right; margin-right: 16px;">ChessJS</h1>
-        <!-- Add your site or application content here -->
-        <div id="chessBoard" style="height: 480px; width: 480px; margin: 0px auto; padding: 30px; background-color: black;"></div>
-        <script src="js/main.js"></script>
-    </body>
+<head>
+    <meta charset="utf-8">
+    <title>ChessJS</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    <!-- css -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Rammetto+One" rel="stylesheet">
+</head>
+<body onload="createBoard()">
+    <div class="header">
+        <h1 class="playerTurn">Turn: Player 1</h1>
+        <h1 class="gameTitle">ChessJS</h1>
+    </div>
+    <!-- Chess -->
+    <div class="chessboardContent">
+        <!-- Positions -->
+        <div class="horizontalPositions">
+            <div class="horizontalPosition">A</div>
+        </div>
+        <div class="verticalPositions">
+            <div class="verticalPosition">8</div>
+        </div>  
+        <!-- Chessboard -->
+        <div id="chessBoard" class="chessBoard">
+            <table id="positions" style="border-collapse: collapse;"></table>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
 </html>

@@ -1,0 +1,78 @@
+.header {
+    display: inline-flex;
+    height: 56px;
+    width: 100%;
+    background-color: black;
+    color: white;
+}
+
+.playerTurn {
+    flex: 1; 
+    text-align: left; 
+    margin: 8px 0px 0px 16px;
+}
+
+.gameTitle {
+    flex: 1; 
+    text-align: right; 
+    margin: 8px 16px 0px 0px;
+}
+
+.chessboardContent {
+    position: relative; 
+    width: 600px; 
+    left: calc(50% - 300px);
+}
+
+.chessBoard {
+    position: absolute; 
+    top: 60px; 
+    left: 60px; 
+    height: 480px; 
+    width: 480px; 
+    padding: 30px; 
+    background-color: black; 
+    border-radius: 5px;
+}
+
+.horizontalPositions {
+    position: absolute; 
+    top: 0px; 
+    left: 90px; 
+    height: 60px; 
+    width: 510px;
+}
+
+.horizontalPosition {
+    height: 60px;
+    width: 60px;
+    float: left;
+    text-align: center;
+    line-height: 60px;
+    font-size: 24px;
+}
+
+.verticalPositions {
+    position: absolute; 
+    top: 90px; 
+    left: 0px; 
+    display: flex; 
+    height: 510px; 
+    width: 60px;
+}
+
+.verticalPosition {
+    height: 60px; 
+    width: 60px; 
+    float: left; 
+    text-align: center; 
+    line-height: 60px; 
+    font-size: 24px;
+}
+
+td {
+    background-color: white;
+    padding: 0px;
+    width: 60px;
+    height: 60px;
+}
