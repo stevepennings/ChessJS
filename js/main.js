@@ -5,7 +5,6 @@ function createBoard() {
     createPositionsGrid();
     createHorizontalIndex();
     createVerticalIndex();
-    setPieces();
 }
 
 function createPositionsGrid() {
@@ -19,6 +18,10 @@ function createPositionsGrid() {
             var position = document.createElement("td");
             position.style.backgroundColor = "white";
             position.positionId = positionId++;
+
+            // Give each tablecell an id as reference
+            position.setAttribute("id", positionId);
+            position.setAttribute("onclick", "move(event)");
 
             // Change background color on odd numbers to create a chess table
             if (position.positionId % 8 == 0) {
@@ -58,16 +61,12 @@ function createHorizontalIndex() {
 function createVerticalIndex() {
     var verticalPositions = document.getElementById("verticalPositions");
     // The letters from A-H of a chessboard
-    for (var column = 0; column < 8; column++) {
+    for (var column = 1; column < 9; column++) {
         var vIndex = document.createElement("tr");
         // Print position id's for testing
         vIndex.innerHTML = column;
         verticalPositions.appendChild(vIndex);
     }  
-}
-
-function setPieces() {
-    //
 }
 
 function resetGame() {

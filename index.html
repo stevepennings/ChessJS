@@ -14,7 +14,7 @@
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css?family=Rammetto+One" rel="stylesheet">
 </head>
-<body onload="createBoard()">
+<body onload="createBoard(), setPieces()">
     <div class="header">
         <h1 class="gameTitle">ChessJS</h1>
     </div>
@@ -38,5 +38,7 @@
     <h1 class="amountMoves"><div style="color: #00867d; font-weight: 100; font-size: 18px">Moves</div>0</h1>
     <button type="button" class="resetButton" onclick="resetGame()"><img src="img/restart.svg" style="height: 28px; width: 28px;"></button>
     <script src="js/main.js"></script>
+    <script src="js/players.js"></script>
+    <script src="js/move.js"></script>
 </body>
 </html>
