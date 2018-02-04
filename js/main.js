@@ -1,4 +1,6 @@
 var positionId = 0;
+var player1;
+var player2;
 
 
 function createBoard() {
@@ -21,7 +23,7 @@ function createPositionsGrid() {
 
             // Give each tablecell an id as reference
             position.setAttribute("id", positionId);
-            position.setAttribute("onclick", "move(event)");
+            position.setAttribute("onclick", "getPosition(event)");
 
             // Change background color on odd numbers to create a chess table
             if (position.positionId % 8 == 0) {
