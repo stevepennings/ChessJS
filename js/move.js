@@ -21,6 +21,7 @@ function identifyPiece(piece) {
 	switch(piece) {
 		case 'pawn1':case 'pawn2':case 'pawn3':case 'pawn4':case 'pawn5':case 'pawn6':case 'pawn7':case 'pawn8':
 		window.pawnOptions(oldPosition);
+		console.log('pawn added');
 		break;
 		case 'tower_1': case 'tower_2':
 		console.log('Identify: ' + piece);
