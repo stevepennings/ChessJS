@@ -17,7 +17,7 @@ function getPosition(event) {
 			window.identifyPiece(piece);
 		}
 	} else {
-		console.log(event.target.id);
+		// nothing
 	}
 }
 
@@ -29,13 +29,34 @@ function identifyPlayer(player) {
 	}
 }
 
+function getSurroundings(oldPosition, rightSide, leftSide, topSide, botSide) {
+	rightSide = (8 - (oldPosition % 8));
+	if (rightSide === 8) {
+		rightSide = 0;
+	}
+	leftSide = (7 - rightSide);
+	topSide = Math.floor((oldPosition / 8));
+	if (oldPosition == 8 || oldPosition == 16 || oldPosition == 24 || oldPosition == 32 || oldPosition == 40 || oldPosition == 48 || oldPosition == 56 || oldPosition == 64) {
+		topSide = (topSide - 1);
+		console.log('hey' + oldPosition);
+	}
+	botSide = (7 - topSide);
+	return [rightSide, leftSide, topSide, botSide];
+}
+
 function identifyPiece(piece) {
+	var surroundings = getSurroundings(oldPosition, topSide, rightSide, botSide, leftSide);
+	var rightSide = surroundings[0];
+	var leftSide = surroundings[1];
+	var topSide = surroundings[2];
+	var botSide = surroundings[3];
 	if (potentialPosition.length !== 0) {
 		clearFocus(potentialPosition);
 	}
 	switch (piece) {
 		case 'pawn1': case 'pawn2': case 'pawn3': case 'pawn4': case 'pawn5': case 'pawn6': case 'pawn7': case 'pawn8':
 			pawnOptions(oldPosition);
+			focus(potentialPosition);
 			break;
 		case 'tower_1': case 'tower_2':
 			towerOptions(oldPosition);
@@ -43,13 +64,15 @@ function identifyPiece(piece) {
 			break;
 		case 'horse_1': case 'horse_2':
 			horseOptions(oldPosition);
+			focus(potentialPosition);
 			break;
 		case 'bishop_1': case 'bishop_2':
-			bishopOptions(oldPosition);
+			bishopOptions(oldPosition, topSide, rightSide, botSide, leftSide);
 			focus(potentialPosition);
 			break;
 		case 'king':
-			console.log('Identify: ' + piece);
+			kingOptions(oldPosition, topSide, rightSide, botSide, leftSide);
+			focus(potentialPosition);
 			break;
 		case 'queen':
 			bishopOptions(oldPosition);
@@ -60,7 +83,6 @@ function identifyPiece(piece) {
 			console.log('No piece to identify.');
 	}
 }
-
 
 function pawnOptions(oldPosition) {
 	switch (window.player) {
@@ -77,17 +99,16 @@ function pawnOptions(oldPosition) {
 		default:
 			console.log('Getting options didnt work.');
 	}
-	focus(potentialPosition);
 }
 
 function towerOptions(oldPosition) {
 	var row = document.getElementById(oldPosition).parentElement.id;
 	var firstChild = parseInt(document.getElementById(row).firstChild.id);
 	var item;
-	for (var b = (oldPosition+8); b <= 64; b += 8) {
+	for (var b = (oldPosition + 8); b <= 64; b += 8) {
 		potentialPosition.push(b);
 	}
-	for (var t = (oldPosition-8); t > 0; t -= 8) {
+	for (var t = (oldPosition - 8); t > 0; t -= 8) {
 		potentialPosition.push(t);
 	}
 	for (var h = 0; h < 8; h++) {
@@ -138,26 +159,11 @@ function horseOptions(oldPosition) {
 	// }
 }
 
-function bishopOptions(oldPosition) {
+function bishopOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
 	var bottoml = oldPosition;
 	var bottomr = oldPosition;
 	var topl = oldPosition;
 	var topr = oldPosition;
-	var x;
-	var y;
-	var rightSide = (8 - (oldPosition % 8));
-	if (rightSide === 8) {
-		rightSide = 0;
-	}
-	var leftSide = (7 - rightSide);
-	var topSide = Math.floor((oldPosition / 8));
-	if (oldPosition == 8 || oldPosition == 16 || oldPosition == 24 || oldPosition == 32 || oldPosition == 40 || oldPosition == 48 || oldPosition == 56 || oldPosition == 64) {
-		topSide = (topSide - 1);
-		console.log('hey' + oldPosition);
-	} 
-	var botSide = (7 - topSide);
-	console.log('rightside: ' + rightSide + ' leftside: ' + leftSide + ' topside: ' + topSide + ' botside: ' + botSide);
-
 	if (rightSide < botSide) {
 		for (var p = 0; p < rightSide; p++) {
 			bottomr = (bottomr + 9);
@@ -195,19 +201,16 @@ function bishopOptions(oldPosition) {
 	if (leftSide < topSide) {
 		for (var p = 0; p < leftSide; p++) {
 			topl = (topl - 9);
-			console.log(leftSide);
 			potentialPosition.push(topl);
 		}
 	} else if (topSide > leftSide) {
 		for (var p = 0; p < topSide; p++) {
 			topl = (topl - 9);
-			console.log(topSide);
 			potentialPosition.push(topl);
 		}
 	} else {
 		for (var p = 0; p < topSide; p++) {
 			topl = (topl - 9);
-			console.log(topl);
 			potentialPosition.push(topl);
 		}
 	}
@@ -227,7 +230,11 @@ function bishopOptions(oldPosition) {
 			topr = (topr - 7);
 			potentialPosition.push(topr);
 		}
-	}	
+	}
+}
+
+function kingOptions(oldPosition) {
+	console.log('im king');
 }
 
 function focus(potentialPosition) {
