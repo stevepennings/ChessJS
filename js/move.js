@@ -75,7 +75,7 @@ function identifyPiece(piece) {
 			focus(potentialPosition);
 			break;
 		case 'queen':
-			bishopOptions(oldPosition);
+			bishopOptions(oldPosition, topSide, rightSide, botSide, leftSide);
 			towerOptions(oldPosition);
 			focus(potentialPosition);
 			break;
@@ -233,8 +233,48 @@ function bishopOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
 	}
 }
 
-function kingOptions(oldPosition) {
-	console.log('im king');
+function kingOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
+	var left = (leftSide != 0);
+	var right = (rightSide != 0);
+	var top = (topSide != 0);
+	var bot = (botSide != 0);
+	var steps = 1;
+	for (var p = (oldPosition - 9); p <= (oldPosition + 9); p += steps) {
+		potentialPosition.push(p);
+		if (p == (oldPosition - 7)) {
+			p = (oldPosition - 1)
+			potentialPosition.push(p);
+			steps = 2;
+		} else if (p == (oldPosition + 1)) {
+			steps = 1;
+			p = (oldPosition + 7)
+			potentialPosition.push(p);
+		}
+	}
+	if (!top) {
+		for (var p = (oldPosition - 9); p <= (oldPosition - 7); p++) {
+			var i = potentialPosition.indexOf(p);
+			potentialPosition.splice(i, 1);
+		}
+	}
+	if (!bot) {
+		for (var p = (oldPosition + 7); p <= (oldPosition + 9); p++) {
+			var i = potentialPosition.indexOf(p);
+			potentialPosition.splice(i, 1);
+		}
+	}
+	if (!left){
+		for (var p = (oldPosition - 9); p <= (oldPosition + 7); p += 8) {
+			var i = potentialPosition.indexOf(p);
+			potentialPosition.splice(i, 1);
+		}
+	}
+	if (!right){
+		for (var p = (oldPosition - 7); p <= (oldPosition + 9); p += 8) {
+			var i = potentialPosition.indexOf(p);
+			potentialPosition.splice(i, 1);
+		}
+	}
 }
 
 function focus(potentialPosition) {
