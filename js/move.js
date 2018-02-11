@@ -39,12 +39,14 @@ function identifyPiece(piece) {
 			break;
 		case 'tower_1': case 'tower_2':
 			towerOptions(oldPosition);
+			focus(potentialPosition);
 			break;
 		case 'horse_1': case 'horse_2':
 			horseOptions(oldPosition);
 			break;
 		case 'bishop_1': case 'bishop_2':
 			bishopOptions(oldPosition);
+			focus(potentialPosition);
 			break;
 		case 'king':
 			console.log('Identify: ' + piece);
@@ -52,6 +54,7 @@ function identifyPiece(piece) {
 		case 'queen':
 			bishopOptions(oldPosition);
 			towerOptions(oldPosition);
+			focus(potentialPosition);
 			break;
 		default:
 			console.log('No piece to identify.');
@@ -93,7 +96,6 @@ function towerOptions(oldPosition) {
 			potentialPosition.push(item);
 		}
 	}
-	focus(potentialPosition);
 }
 
 function horseOptions(oldPosition) {
@@ -225,10 +227,7 @@ function bishopOptions(oldPosition) {
 			topr = (topr - 7);
 			potentialPosition.push(topr);
 		}
-	}
-	
-	
-	focus(potentialPosition);	
+	}	
 }
 
 function focus(potentialPosition) {
