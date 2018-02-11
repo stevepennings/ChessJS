@@ -19,7 +19,7 @@
         <h1 class="gameTitle">ChessJS</h1>
     </div>
     <!-- Chess -->
-    <h1 class="playerTurn"><div style="color: #00867d; font-weight: 100; font-size: 18px">Turn</div>Player 1</h1>
+    <h1 class="playerTurn"><div style="color: #00867d; font-weight: 100; font-size: 18px">Turn</div><div id="playerTurn">Player 1</div></h1>
     <div class="chessboardContent">
         <!-- Positions -->
         <div class="horizontalpositions" style="position: absolute; right: 30px;">
@@ -35,7 +35,7 @@
             <table id="positions" style="border-collapse: collapse;"></table>
         </div>
     </div>
-    <h1 class="amountMoves"><div style="color: #00867d; font-weight: 100; font-size: 18px">Moves</div>0</h1>
+    <h1 class="amountMoves"><div style="color: #00867d; font-weight: 100; font-size: 18px">Moves</div><div id="moves">0</div></h1>
     <button type="button" class="resetButton" onclick="resetGame()"><img src="img/restart.svg" style="height: 28px; width: 28px;"></button>
     <script src="js/main.js"></script>
     <script src="js/pieces.js"></script>

@@ -15,6 +15,7 @@ function setPieces(chessPiece) {
             var num = (i - 48);
             var pos = document.getElementById((i + 1));
             var chessPieceImg = document.createElement("img");
+            chessPieceImg.setAttribute('style', 'position: absolute; top: 0px; left: 0px; width: 36px; height: 36px;');
             if(player !== 'player2'){
                 chessPiece = player1[i];
             } else if(player !== 'player1'){

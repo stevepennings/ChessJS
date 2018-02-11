@@ -16,11 +16,12 @@ function createPositionsGrid() {
     // Nested loop
     for (var row = 0; row < 8; row++) {
         var vPositions = document.createElement("tr");
+        vPositions.setAttribute("id", 'row' + row);
         for(var column = 0; column < 8; column++) {
             var position = document.createElement("td");
             position.style.backgroundColor = "white";
             position.positionId = positionId++;
-
+            position.setAttribute('style', 'position: relative;')
             // Give each tablecell an id as reference
             position.setAttribute("id", positionId);
             position.setAttribute("onclick", "getPosition(event)");
