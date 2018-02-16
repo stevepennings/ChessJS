@@ -50,6 +50,7 @@ function identifyPiece(piece) {
 	var leftSide = surroundings[1];
 	var topSide = surroundings[2];
 	var botSide = surroundings[3];
+	console.log('right: ' + rightSide + ' left: ' + leftSide + ' top: ' + topSide + ' bot: ' + botSide)
 	if (potentialPosition.length !== 0) {
 		clearFocus(potentialPosition, beatPosition);
 	}
@@ -59,7 +60,7 @@ function identifyPiece(piece) {
 			focus(potentialPosition);
 			break;
 		case 'tower_1': case 'tower_2':
-			towerOptions(oldPosition);
+			towerOptions(oldPosition, topSide, rightSide, botSide, leftSide);
 			focus(potentialPosition, beatPosition);
 			break;
 		case 'horse_1': case 'horse_2':
@@ -101,7 +102,7 @@ function pawnOptions(oldPosition) {
 	}
 }
 
-function towerOptions(oldPosition, player) {
+function towerOptions(oldPosition, topSide, rightSide, botSide, leftSide, player) {
 	var row = document.getElementById(oldPosition).parentElement.id;
 	var firstChild = parseInt(document.getElementById(row).firstChild.id);
 	var item;
@@ -129,12 +130,42 @@ function towerOptions(oldPosition, player) {
 			potentialPosition.push(t);
 		}
 	}
-	for (var h = 0; h < 8; h++) {
-		item = (firstChild + h);
-		if (item != oldPosition) {
-			potentialPosition.push(item);
+	if(rightSide) {
+		for(var hr = (oldPosition+1); hr <= (oldPosition + rightSide); hr++) {
+			if (document.getElementById(hr).firstChild) {
+				if (document.getElementById(hr).firstChild.id.substring(0, 7) === window.player) {
+					t = (oldPosition + rightSide);
+				} else {
+					beatPosition.push(hr);
+					t = (oldPosition + rightSide);
+				}
+			} else {
+				potentialPosition.push(hr);
+			}
+			
 		}
 	}
+	if(leftSide) {
+		for(var hl = (oldPosition-1); hl >= (oldPosition - leftSide); hl--) {
+			if (document.getElementById(hl).firstChild) {
+				if (document.getElementById(hl).firstChild.id.substring(0, 7) === window.player) {
+					hl = (oldPosition - leftSide);
+				} else {
+					beatPosition.push(hl);
+					hl = (oldPosition - leftSide);
+				}
+			} else {
+				potentialPosition.push(hl);
+			}
+		}
+	}
+	
+	// for (var h = 0; h < 8; h++) {
+	// 	item = (firstChild + h);
+	// 	if (item != oldPosition) {
+	// 		potentialPosition.push(item);
+	// 	}
+	// }
 }
 
 function horseOptions(oldPosition) {
