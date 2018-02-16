@@ -1,6 +1,7 @@
 var oldPosition;
 var newPosition;
 var potentialPosition = [];
+var beatPosition = [];
 var piece;
 var pieceDetails;
 var player = 'player1';
@@ -38,7 +39,6 @@ function getSurroundings(oldPosition, rightSide, leftSide, topSide, botSide) {
 	topSide = Math.floor((oldPosition / 8));
 	if (oldPosition == 8 || oldPosition == 16 || oldPosition == 24 || oldPosition == 32 || oldPosition == 40 || oldPosition == 48 || oldPosition == 56 || oldPosition == 64) {
 		topSide = (topSide - 1);
-		console.log('hey' + oldPosition);
 	}
 	botSide = (7 - topSide);
 	return [rightSide, leftSide, topSide, botSide];
@@ -51,7 +51,7 @@ function identifyPiece(piece) {
 	var topSide = surroundings[2];
 	var botSide = surroundings[3];
 	if (potentialPosition.length !== 0) {
-		clearFocus(potentialPosition);
+		clearFocus(potentialPosition, beatPosition);
 	}
 	switch (piece) {
 		case 'pawn1': case 'pawn2': case 'pawn3': case 'pawn4': case 'pawn5': case 'pawn6': case 'pawn7': case 'pawn8':
@@ -60,7 +60,7 @@ function identifyPiece(piece) {
 			break;
 		case 'tower_1': case 'tower_2':
 			towerOptions(oldPosition);
-			focus(potentialPosition);
+			focus(potentialPosition, beatPosition);
 			break;
 		case 'horse_1': case 'horse_2':
 			horseOptions(oldPosition);
@@ -101,15 +101,33 @@ function pawnOptions(oldPosition) {
 	}
 }
 
-function towerOptions(oldPosition) {
+function towerOptions(oldPosition, player) {
 	var row = document.getElementById(oldPosition).parentElement.id;
 	var firstChild = parseInt(document.getElementById(row).firstChild.id);
 	var item;
 	for (var b = (oldPosition + 8); b <= 64; b += 8) {
-		potentialPosition.push(b);
+		if (document.getElementById(b).firstChild) {
+			if (document.getElementById(b).firstChild.id.substring(0, 7) === window.player) {
+				b = 64;
+			} else {
+				beatPosition.push(b);
+				b = 64;
+			}
+		} else {
+			potentialPosition.push(b);
+		}
 	}
 	for (var t = (oldPosition - 8); t > 0; t -= 8) {
-		potentialPosition.push(t);
+		if (document.getElementById(t).firstChild) {
+			if (document.getElementById(t).firstChild.id.substring(0, 7) === window.player) {
+				t = 0;
+			} else {
+				beatPosition.push(t);
+				t = 0;
+			}
+		} else {
+			potentialPosition.push(t);
+		}
 	}
 	for (var h = 0; h < 8; h++) {
 		item = (firstChild + h);
@@ -263,13 +281,13 @@ function kingOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
 			potentialPosition.splice(i, 1);
 		}
 	}
-	if (!left){
+	if (!left) {
 		for (var p = (oldPosition - 9); p <= (oldPosition + 7); p += 8) {
 			var i = potentialPosition.indexOf(p);
 			potentialPosition.splice(i, 1);
 		}
 	}
-	if (!right){
+	if (!right) {
 		for (var p = (oldPosition - 7); p <= (oldPosition + 9); p += 8) {
 			var i = potentialPosition.indexOf(p);
 			potentialPosition.splice(i, 1);
@@ -277,25 +295,43 @@ function kingOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
 	}
 }
 
-function focus(potentialPosition) {
-	for (var i = 0; i < potentialPosition.length; i++) {
-		var o = document.getElementById(potentialPosition[i]);
-		var overlay = document.createElement("div");
-		overlay.setAttribute("id", 'pot' + potentialPosition[i]);
-		overlay.setAttribute("onclick", "setPosition(event)");
-		overlay.setAttribute("style", "position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: #cbba83; opacity: 0.5;");
-		o.appendChild(overlay);
+function focus(potentialPosition, beatPosition) {
+	if (potentialPosition) {
+		for (var i = 0; i < potentialPosition.length; i++) {
+			var o = document.getElementById(potentialPosition[i]);
+			var overlay = document.createElement("div");
+			overlay.setAttribute("id", 'pot' + potentialPosition[i]);
+			overlay.setAttribute("onclick", "setPosition(event)");
+			overlay.setAttribute("style", "position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: #cbba83; opacity: 0.5;");
+			o.appendChild(overlay);
+		}
+	}
+	if (beatPosition) {
+		for (var b = 0; b < beatPosition.length; b++) {
+			var oBeat = document.getElementById(beatPosition[b]);
+			var overlayBeat = document.createElement("div");
+			overlayBeat.setAttribute("id", 'pot' + beatPosition[b]);
+			overlayBeat.setAttribute("onclick", "setPosition(event)");
+			overlayBeat.setAttribute("style", "position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: red; opacity: 0.5;");
+			oBeat.appendChild(overlayBeat);
+		}
 	}
 }
 
 function setPosition(event) {
-	window.newPosition = event.target.parentElement.id;
+	var positionDetails = event.target.parentElement;
+	window.newPosition = positionDetails.id;
+	if (positionDetails.firstChild.id.substring(0, 6) == 'player') {
+		document.getElementById(positionDetails.firstChild.id).remove();
+	}
+	// var elem = document.getElementById('pot' + potentialPosition[i]);
+	// 	elem.remove();
 	var piece = window.player + '_' + window.piece;
 	document.getElementById(window.newPosition).appendChild(
 		document.getElementById(piece)
 	);
 	window.player = togglePlayer(player);
-	clearFocus(potentialPosition);
+	clearFocus(potentialPosition, beatPosition);
 }
 
 function togglePlayer(player) {
@@ -306,12 +342,21 @@ function togglePlayer(player) {
 	}
 }
 
-function clearFocus(potentialPosition) {
-	for (var i = 0; i < potentialPosition.length; i++) {
-		var elem = document.getElementById('pot' + potentialPosition[i]);
-		elem.remove();
+function clearFocus(potentialPosition, beatPosition) {
+	if (potentialPosition) {
+		for (var i = 0; i < potentialPosition.length; i++) {
+			var elem = document.getElementById('pot' + potentialPosition[i]);
+			elem.remove();
+		}
+		potentialPosition.splice(0, potentialPosition.length);
 	}
-	potentialPosition.splice(0, potentialPosition.length);
+	if (beatPosition) {
+		for (var b = 0; b < beatPosition.length; b++) {
+			var elemBeat = document.getElementById('pot' + beatPosition[b]);
+			elemBeat.remove();
+		}
+		beatPosition.splice(0, beatPosition.length);
+	}
 	var playerTurn = document.getElementById("playerTurn");
 	var movesDiv = document.getElementById("moves");
 	if (player === 'player1') {
