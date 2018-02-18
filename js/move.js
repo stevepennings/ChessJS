@@ -56,8 +56,8 @@ function identifyPiece(piece) {
 	}
 	switch (piece) {
 		case 'pawn1': case 'pawn2': case 'pawn3': case 'pawn4': case 'pawn5': case 'pawn6': case 'pawn7': case 'pawn8':
-			pawnOptions(oldPosition);
-			focus(potentialPosition);
+			pawnOptions(oldPosition, player);
+			focus(potentialPosition, beatPosition);
 			break;
 		case 'tower_1': case 'tower_2':
 			towerOptions(oldPosition, topSide, rightSide, botSide, leftSide);
@@ -85,16 +85,50 @@ function identifyPiece(piece) {
 	}
 }
 
-function pawnOptions(oldPosition) {
-	switch (window.player) {
+function pawnOptions(oldPosition, player) {
+	switch (player) {
 		case 'player1':
-			for (var i = (oldPosition + 8); i <= (oldPosition + 16); i += 8) {
-				potentialPosition.push(i);
+			for (var a = (oldPosition + 7); a <= (oldPosition + 9); a += 2) {
+				if (document.getElementById(a).firstChild) {
+					if (document.getElementById(a).firstChild.id.substring(0, 7) !== player) {
+						beatPosition.push(a);
+					}
+				}
+			}
+			if (oldPosition >= 9 && oldPosition <= 16) {
+				for (var i = (oldPosition + 8); i <= (oldPosition + 16); i += 8) {
+					if (document.getElementById(i).id.firstchild) {
+						if (document.getElementById(i).firstChild.id.substring(0, 7) === player) {
+							i = (oldPosition + 16);
+						}
+					} else {
+						potentialPosition.push(i);
+					}
+				}
+			} else {
+				potentialPosition.push(oldPosition + 8);
 			}
 			break;
 		case 'player2':
-			for (var i = (oldPosition - 8); i >= (oldPosition - 16); i -= 8) {
-				potentialPosition.push(i);
+			for (var a = (oldPosition - 7); a >= (oldPosition - 9); a -= 2) {
+				if (document.getElementById(a).firstChild) {
+					if (document.getElementById(a).firstChild.id.substring(0, 7) !== player) {
+						beatPosition.push(a);
+					}
+				}
+			}
+			if (oldPosition >= 49 && oldPosition <= 56) {
+				for (var i = (oldPosition - 8); i >= (oldPosition - 16); i -= 8) {
+					if (document.getElementById(i).id.firstchild) {
+						if (document.getElementById(i).firstChild.id.substring(0, 7) === player) {
+							i = (oldPosition - 16);
+						}
+					} else {
+						potentialPosition.push(i);
+					}
+				}
+			} else {
+				potentialPosition.push(oldPosition - 8);
 			}
 			break;
 		default:
@@ -130,8 +164,8 @@ function towerOptions(oldPosition, topSide, rightSide, botSide, leftSide, player
 			potentialPosition.push(t);
 		}
 	}
-	if(rightSide) {
-		for(var hr = (oldPosition+1); hr <= (oldPosition + rightSide); hr++) {
+	if (rightSide) {
+		for (var hr = (oldPosition + 1); hr <= (oldPosition + rightSide); hr++) {
 			if (document.getElementById(hr).firstChild) {
 				if (document.getElementById(hr).firstChild.id.substring(0, 7) === window.player) {
 					t = (oldPosition + rightSide);
@@ -142,11 +176,11 @@ function towerOptions(oldPosition, topSide, rightSide, botSide, leftSide, player
 			} else {
 				potentialPosition.push(hr);
 			}
-			
+
 		}
 	}
-	if(leftSide) {
-		for(var hl = (oldPosition-1); hl >= (oldPosition - leftSide); hl--) {
+	if (leftSide) {
+		for (var hl = (oldPosition - 1); hl >= (oldPosition - leftSide); hl--) {
 			if (document.getElementById(hl).firstChild) {
 				if (document.getElementById(hl).firstChild.id.substring(0, 7) === window.player) {
 					hl = (oldPosition - leftSide);
@@ -159,7 +193,7 @@ function towerOptions(oldPosition, topSide, rightSide, botSide, leftSide, player
 			}
 		}
 	}
-	
+
 	// for (var h = 0; h < 8; h++) {
 	// 	item = (firstChild + h);
 	// 	if (item != oldPosition) {
