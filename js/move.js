@@ -76,9 +76,9 @@ function identifyPiece(piece) {
 			focus(potentialPosition);
 			break;
 		case 'queen':
-			bishopOptions(oldPosition, topSide, rightSide, botSide, leftSide);
-			towerOptions(oldPosition);
-			focus(potentialPosition);
+			bishopOptions(oldPosition, topSide, rightSide, botSide, leftSide, beatPosition);
+			towerOptions(oldPosition, topSide, rightSide, botSide, leftSide);
+			focus(potentialPosition, beatPosition);
 			break;
 		default:
 			console.log('No piece to identify.');
@@ -172,10 +172,10 @@ function towerOptions(oldPosition, topSide, rightSide, botSide, leftSide, player
 		for (var hr = (oldPosition + 1); hr <= (oldPosition + rightSide); hr++) {
 			if (document.getElementById(hr).firstChild) {
 				if (document.getElementById(hr).firstChild.id.substring(0, 7) === window.player) {
-					t = (oldPosition + rightSide);
+					hr = (oldPosition + rightSide);
 				} else {
 					beatPosition.push(hr);
-					t = (oldPosition + rightSide);
+					hr = (oldPosition + rightSide);
 				}
 			} else {
 				potentialPosition.push(hr);
