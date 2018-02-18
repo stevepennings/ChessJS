@@ -492,16 +492,31 @@ function setPosition(event) {
 	var positionDetails = event.target.parentElement;
 	window.newPosition = positionDetails.id;
 	if (positionDetails.firstChild.id.substring(0, 6) == 'player') {
-		document.getElementById(positionDetails.firstChild.id).remove();
+		var removePiece = document.getElementById(positionDetails.firstChild.id);
+		if (removePiece.id.substring(8, 12) === 'king') {
+			console.log('game over');
+		}
+		removePiece.remove();
 	}
-	// var elem = document.getElementById('pot' + potentialPosition[i]);
-	// 	elem.remove();
 	var piece = window.player + '_' + window.piece;
 	document.getElementById(window.newPosition).appendChild(
 		document.getElementById(piece)
 	);
 	window.player = togglePlayer(player);
+	getMoves();
 	clearFocus(potentialPosition, beatPosition);
+}
+
+function getMoves() {
+	var playerTurn = document.getElementById("playerTurn");
+	var movesDiv = document.getElementById("moves");
+	if (player === 'player1') {
+		playerTurn.textContent = 'Player 1';
+		window.moves++;
+		movesDiv.textContent = moves;
+	} else if (player === 'player2') {
+		playerTurn.textContent = 'Player 2';
+	}
 }
 
 function togglePlayer(player) {
@@ -526,14 +541,5 @@ function clearFocus(potentialPosition, beatPosition) {
 			elemBeat.remove();
 		}
 		beatPosition.splice(0, beatPosition.length);
-	}
-	var playerTurn = document.getElementById("playerTurn");
-	var movesDiv = document.getElementById("moves");
-	if (player === 'player1') {
-		playerTurn.textContent = 'Player 1';
-		window.moves++;
-		movesDiv.textContent = moves;
-	} else if (player === 'player2') {
-		playerTurn.textContent = 'Player 2';
 	}
 }
