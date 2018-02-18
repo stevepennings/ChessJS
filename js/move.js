@@ -69,7 +69,7 @@ function identifyPiece(piece) {
 			break;
 		case 'bishop_1': case 'bishop_2':
 			bishopOptions(oldPosition, topSide, rightSide, botSide, leftSide);
-			focus(potentialPosition);
+			focus(potentialPosition, beatPosition);
 			break;
 		case 'king':
 			kingOptions(oldPosition, topSide, rightSide, botSide, leftSide);
@@ -97,15 +97,17 @@ function pawnOptions(oldPosition, player) {
 			}
 			if (oldPosition >= 9 && oldPosition <= 16) {
 				for (var i = (oldPosition + 8); i <= (oldPosition + 16); i += 8) {
-					if (document.getElementById(i).id.firstchild) {
+					if (document.getElementById(i).firstChild) {
 						if (document.getElementById(i).firstChild.id.substring(0, 7) === player) {
+							i = (oldPosition + 16);
+						} else {
 							i = (oldPosition + 16);
 						}
 					} else {
 						potentialPosition.push(i);
 					}
 				}
-			} else {
+			} else if (!document.getElementById((oldPosition+8)).firstChild) {
 				potentialPosition.push(oldPosition + 8);
 			}
 			break;
@@ -119,15 +121,17 @@ function pawnOptions(oldPosition, player) {
 			}
 			if (oldPosition >= 49 && oldPosition <= 56) {
 				for (var i = (oldPosition - 8); i >= (oldPosition - 16); i -= 8) {
-					if (document.getElementById(i).id.firstchild) {
+					if (document.getElementById(i).firstChild) {
 						if (document.getElementById(i).firstChild.id.substring(0, 7) === player) {
+							i = (oldPosition - 16);
+						} else {
 							i = (oldPosition - 16);
 						}
 					} else {
 						potentialPosition.push(i);
 					}
 				}
-			} else {
+			} else if (!document.getElementById((oldPosition-8)).firstChild) {
 				potentialPosition.push(oldPosition - 8);
 			}
 			break;
@@ -193,13 +197,6 @@ function towerOptions(oldPosition, topSide, rightSide, botSide, leftSide, player
 			}
 		}
 	}
-
-	// for (var h = 0; h < 8; h++) {
-	// 	item = (firstChild + h);
-	// 	if (item != oldPosition) {
-	// 		potentialPosition.push(item);
-	// 	}
-	// }
 }
 
 function horseOptions(oldPosition) {
@@ -250,68 +247,176 @@ function bishopOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
 	if (rightSide < botSide) {
 		for (var p = 0; p < rightSide; p++) {
 			bottomr = (bottomr + 9);
-			potentialPosition.push(bottomr);
+			if (document.getElementById(bottomr).firstChild) {
+				if (document.getElementById(bottomr).firstChild.id.substring(0, 7) === window.player) {
+					p = rightSide;
+				} else {
+					beatPosition.push(bottomr);
+					p = rightSide;
+				}
+			} else {
+				potentialPosition.push(bottomr);
+			}
 		}
 	} else if (botSide > rightSide) {
 		for (var p = 0; p < botSide; p++) {
 			bottomr = (bottomr + 9);
-			potentialPosition.push(bottomr);
+			if (document.getElementById(bottomr).firstChild) {
+				if (document.getElementById(bottomr).firstChild.id.substring(0, 7) === window.player) {
+					p = botSide;
+				} else {
+					beatPosition.push(bottomr);
+					p = botSide;
+				}
+			} else {
+				potentialPosition.push(bottomr);
+			}
 		}
 	} else {
 		for (var p = 0; p < botSide; p++) {
 			bottomr = (bottomr + 9);
-			potentialPosition.push(bottomr);
+			if (document.getElementById(bottomr).firstChild) {
+				if (document.getElementById(bottomr).firstChild.id.substring(0, 7) === window.player) {
+					p = botSide;
+				} else {
+					beatPosition.push(bottomr);
+					p = botSide;
+				}
+			} else {
+				potentialPosition.push(bottomr);
+			}
 		}
 	}
 
 	if (leftSide < botSide) {
 		for (var p = 0; p < leftSide; p++) {
 			bottoml = (bottoml + 7);
-			potentialPosition.push(bottoml);
+			if (document.getElementById(bottoml).firstChild) {
+				if (document.getElementById(bottoml).firstChild.id.substring(0, 7) === window.player) {
+					p = leftSide;
+				} else {
+					beatPosition.push(bottoml);
+					p = leftSide;
+				}
+			} else {
+				potentialPosition.push(bottoml);
+			}
 		}
 	} else if (botSide > leftSide) {
 		for (var p = 0; p < botSide; p++) {
 			bottoml = (bottoml + 7);
-			potentialPosition.push(bottoml);
+			if (document.getElementById(bottoml).firstChild) {
+				if (document.getElementById(bottoml).firstChild.id.substring(0, 7) === window.player) {
+					p = botSide;
+				} else {
+					beatPosition.push(bottoml);
+					p = botSide;
+				}
+			} else {
+				potentialPosition.push(bottoml);
+			}
 		}
 	} else {
 		for (var p = 0; p < botSide; p++) {
 			bottoml = (bottoml + 7);
-			potentialPosition.push(bottoml);
+			if (document.getElementById(bottoml).firstChild) {
+				if (document.getElementById(bottoml).firstChild.id.substring(0, 7) === window.player) {
+					p = botSide;
+				} else {
+					beatPosition.push(bottoml);
+					p = botSide;
+				}
+			} else {
+				potentialPosition.push(bottoml);
+			}
 		}
 	}
 
 	if (leftSide < topSide) {
 		for (var p = 0; p < leftSide; p++) {
 			topl = (topl - 9);
-			potentialPosition.push(topl);
+			if (document.getElementById(topl).firstChild) {
+				if (document.getElementById(topl).firstChild.id.substring(0, 7) === window.player) {
+					p = leftSide;
+				} else {
+					beatPosition.push(topl);
+					p = leftSide;
+				}
+			} else {
+				potentialPosition.push(topl);
+			}
 		}
 	} else if (topSide > leftSide) {
 		for (var p = 0; p < topSide; p++) {
 			topl = (topl - 9);
-			potentialPosition.push(topl);
+			if (document.getElementById(topl).firstChild) {
+				if (document.getElementById(topl).firstChild.id.substring(0, 7) === window.player) {
+					p = topSide;
+				} else {
+					beatPosition.push(topl);
+					p = topSide;
+				}
+			} else {
+				potentialPosition.push(topl);
+			}
 		}
 	} else {
 		for (var p = 0; p < topSide; p++) {
 			topl = (topl - 9);
-			potentialPosition.push(topl);
+			if (document.getElementById(topl).firstChild) {
+				if (document.getElementById(topl).firstChild.id.substring(0, 7) === window.player) {
+					p = topSide;
+				} else {
+					beatPosition.push(topl);
+					p = topSide;
+				}
+			} else {
+				potentialPosition.push(topl);
+			}
 		}
 	}
 
 	if (rightSide < topSide) {
 		for (var p = 0; p < rightSide; p++) {
 			topr = (topr - 7);
-			potentialPosition.push(topr);
+			if (document.getElementById(topr).firstChild) {
+				if (document.getElementById(topr).firstChild.id.substring(0, 7) === window.player) {
+					p = rightSide;
+				} else {
+					beatPosition.push(topr);
+					p = rightSide;
+				}
+			} else {
+				potentialPosition.push(topr);
+			}
 		}
 	} else if (topSide > rightSide) {
 		for (var p = 0; p < topSide; p++) {
 			topr = (topr - 7);
-			potentialPosition.push(topr);
+			if (document.getElementById(topr).firstChild) {
+				if (document.getElementById(topr).firstChild.id.substring(0, 7) === window.player) {
+					p = topSide;
+				} else {
+					beatPosition.push(topr);
+					p = topSide;
+				}
+			} else {
+				potentialPosition.push(topr);
+			}
 		}
 	} else {
 		for (var p = 0; p < topSide; p++) {
 			topr = (topr - 7);
-			potentialPosition.push(topr);
+			if (document.getElementById(topr).firstChild) {
+				if (document.getElementById(topr).firstChild.id.substring(0, 7) === window.player) {
+					p = topSide;
+				} else {
+					beatPosition.push(topr);
+					p = topSide;
+				}
+			} else {
+				potentialPosition.push(topr);
+			}
 		}
 	}
 }
