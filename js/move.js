@@ -75,7 +75,7 @@ function identifyPiece(piece) {
 			break;
 		case 'king':
 			kingOptions(oldPosition, topSide, rightSide, botSide, leftSide);
-			focus(potentialPosition);
+			focus(potentialPosition, beatPosition);
 			break;
 		case 'queen':
 			bishopOptions(oldPosition, topSide, rightSide, botSide, leftSide, beatPosition);
@@ -244,18 +244,6 @@ function horseOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
 				getPositionStatus(spot);
 			}
 		}
-	}
-}
-
-function getPositionStatus(spot) {
-	if (document.getElementById(spot).firstChild) {
-		if (document.getElementById(spot).firstChild.id.substring(0, 7) !== window.player) {
-			return beatPosition.push(spot);
-		} else {
-			// do nothing
-		}
-	} else {
-		return potentialPosition.push(spot);
 	}
 }
 
@@ -464,14 +452,12 @@ function kingOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
 	// if top/bot/left/right positions not available remove possible positions
 	if (!top) {
 		for (var t = (oldPosition - 9); t <= (oldPosition - 7); t++) {
-			console.log(t);
 			var i = potentialPosition.indexOf(t);
 			potentialPosition.splice(i, 1);
 		}
 	}
 	if (!bot) {
 		for (var b = (oldPosition + 7); b <= (oldPosition + 9); b++) {
-			console.log(b);
 			var i = potentialPosition.indexOf(b);
 			potentialPosition.splice(i, 1);
 		}
@@ -486,10 +472,21 @@ function kingOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
 	}
 	if (!right) {
 		for (var r = (oldPosition - 7); r <= (oldPosition + 9); r += 8) {
-			console.log(r);
 			var i = potentialPosition.indexOf(r);
 			potentialPosition.splice(i, 1);
 		}
+	}
+	var temporaryPositions = [];
+	for (var pP = 0; pP < potentialPosition.length; pP++) {
+		spot = potentialPosition[pP];
+		temporaryPositions.push(spot);
+		// getPositionStatus(spot);
+	}
+	potentialPosition = [];
+
+	for (var tP = 0; tP < temporaryPositions.length; tP++) {
+		spot = temporaryPositions[tP];
+		getPositionStatus(spot);
 	}
 }
 
@@ -513,6 +510,18 @@ function focus(potentialPosition, beatPosition) {
 			overlayBeat.setAttribute("style", "position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: red; opacity: 0.5;");
 			oBeat.appendChild(overlayBeat);
 		}
+	}
+}
+
+function getPositionStatus(spot) {
+	if (document.getElementById(spot).firstChild) {
+		if (document.getElementById(spot).firstChild.id.substring(0, 7) !== window.player) {
+			return beatPosition.push(spot);
+		} else {
+			// do nothing
+		}
+	} else {
+		return potentialPosition.push(spot);
 	}
 }
 
