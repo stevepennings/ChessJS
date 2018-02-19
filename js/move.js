@@ -7,6 +7,8 @@ var pieceDetails;
 var player = 'player1';
 var playerVerified;
 var moves = 0;
+var spot;
+var matchFinished = false;
 
 function getPosition(event) {
 	if (event.target.parentElement) {
@@ -50,7 +52,7 @@ function identifyPiece(piece) {
 	var leftSide = surroundings[1];
 	var topSide = surroundings[2];
 	var botSide = surroundings[3];
-	console.log('right: ' + rightSide + ' left: ' + leftSide + ' top: ' + topSide + ' bot: ' + botSide)
+	// console.log('right: ' + rightSide + ' left: ' + leftSide + ' top: ' + topSide + ' bot: ' + botSide)
 	if (potentialPosition.length !== 0) {
 		clearFocus(potentialPosition, beatPosition);
 	}
@@ -64,8 +66,8 @@ function identifyPiece(piece) {
 			focus(potentialPosition, beatPosition);
 			break;
 		case 'horse_1': case 'horse_2':
-			horseOptions(oldPosition);
-			focus(potentialPosition);
+			horseOptions(oldPosition, topSide, rightSide, botSide, leftSide);
+			focus(potentialPosition, beatPosition);
 			break;
 		case 'bishop_1': case 'bishop_2':
 			bishopOptions(oldPosition, topSide, rightSide, botSide, leftSide);
@@ -107,7 +109,7 @@ function pawnOptions(oldPosition, player) {
 						potentialPosition.push(i);
 					}
 				}
-			} else if (!document.getElementById((oldPosition+8)).firstChild) {
+			} else if (!document.getElementById((oldPosition + 8)).firstChild) {
 				potentialPosition.push(oldPosition + 8);
 			}
 			break;
@@ -131,7 +133,7 @@ function pawnOptions(oldPosition, player) {
 						potentialPosition.push(i);
 					}
 				}
-			} else if (!document.getElementById((oldPosition-8)).firstChild) {
+			} else if (!document.getElementById((oldPosition - 8)).firstChild) {
 				potentialPosition.push(oldPosition - 8);
 			}
 			break;
@@ -199,44 +201,62 @@ function towerOptions(oldPosition, topSide, rightSide, botSide, leftSide, player
 	}
 }
 
-function horseOptions(oldPosition) {
-	// var modulo = (8 - (oldPosition % 8));
-	// if (oldPosition <= 8) {
-	// 	console.log('4 positions available')
-	// 	if (modulo <= 1 || modulo >= 8) {
-	// 		console.log('4 positions available');
-	// 	} else if (modulo <= 2 || modulo >= 7) {
-	// 		console.log('6 positions available');
-	// 	}
-	// }
-	// for (var p = 0; p < 8; p++) {
-	// 	switch (p) {
-	// 		case 1:
-	// 		if (oldPosition === )
-	// 		break;
-	// 		case 2:
+function horseOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
+	console.log('right: ' + rightSide + ' left: ' + leftSide + ' top: ' + topSide + ' bot: ' + botSide);
+	if (topSide >= 1) {
+		if (leftSide >= 2) {
+			// variable top 1 left 2
+			spot = (oldPosition - 10);
+			getPositionStatus(spot);
+		}
+		if (rightSide >= 2) {
+			spot = (oldPosition - 6);
+			getPositionStatus(spot);
+		}
+		if (topSide >= 2) {
+			if (leftSide >= 1) {
+				spot = (oldPosition - 17);
+				getPositionStatus(spot);
+			}
+			if (rightSide >= 1) {
+				spot = (oldPosition - 15);
+				getPositionStatus(spot);
+			}
+		}
+	}
 
-	// 		break;
-	// 		case 3:
+	if (botSide >= 1) {
+		if (leftSide >= 2) {
+			spot = (oldPosition + 6);
+			getPositionStatus(spot);
+		}
+		if (rightSide >= 2) {
+			spot = (oldPosition + 10);
+			getPositionStatus(spot);
+		}
+		if (botSide >= 2) {
+			if (leftSide >= 1) {
+				spot = (oldPosition + 15);
+				getPositionStatus(spot);
+			}
+			if (rightSide >= 1) {
+				spot = (oldPosition + 17);
+				getPositionStatus(spot);
+			}
+		}
+	}
+}
 
-	// 		break;
-	// 		case 4:
-
-	// 		break;
-	// 		case 5:
-
-	// 		break;
-	// 		case 6:
-
-	// 		break;
-	// 		case 7:
-
-	// 		break;
-	// 		case 8:
-
-	// 		break;
-	// 	}
-	// }
+function getPositionStatus(spot) {
+	if (document.getElementById(spot).firstChild) {
+		if (document.getElementById(spot).firstChild.id.substring(0, 7) !== window.player) {
+			return beatPosition.push(spot);
+		} else {
+			// do nothing
+		}
+	} else {
+		return potentialPosition.push(spot);
+	}
 }
 
 function bishopOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
@@ -427,6 +447,8 @@ function kingOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
 	var top = (topSide != 0);
 	var bot = (botSide != 0);
 	var steps = 1;
+
+	// loop through king positions
 	for (var p = (oldPosition - 9); p <= (oldPosition + 9); p += steps) {
 		potentialPosition.push(p);
 		if (p == (oldPosition - 7)) {
@@ -439,27 +461,33 @@ function kingOptions(oldPosition, topSide, rightSide, botSide, leftSide) {
 			potentialPosition.push(p);
 		}
 	}
+	// if top/bot/left/right positions not available remove possible positions
 	if (!top) {
-		for (var p = (oldPosition - 9); p <= (oldPosition - 7); p++) {
-			var i = potentialPosition.indexOf(p);
+		for (var t = (oldPosition - 9); t <= (oldPosition - 7); t++) {
+			console.log(t);
+			var i = potentialPosition.indexOf(t);
 			potentialPosition.splice(i, 1);
 		}
 	}
 	if (!bot) {
-		for (var p = (oldPosition + 7); p <= (oldPosition + 9); p++) {
-			var i = potentialPosition.indexOf(p);
+		for (var b = (oldPosition + 7); b <= (oldPosition + 9); b++) {
+			console.log(b);
+			var i = potentialPosition.indexOf(b);
 			potentialPosition.splice(i, 1);
 		}
 	}
 	if (!left) {
-		for (var p = (oldPosition - 9); p <= (oldPosition + 7); p += 8) {
-			var i = potentialPosition.indexOf(p);
+		var corner = 1;
+		for (var l = (oldPosition - 9); l <= (oldPosition + 7); l += 8) {
+			if (oldPosition === 0) { l-- }
+			var i = potentialPosition.indexOf(l);
 			potentialPosition.splice(i, 1);
 		}
 	}
 	if (!right) {
-		for (var p = (oldPosition - 7); p <= (oldPosition + 9); p += 8) {
-			var i = potentialPosition.indexOf(p);
+		for (var r = (oldPosition - 7); r <= (oldPosition + 9); r += 8) {
+			console.log(r);
+			var i = potentialPosition.indexOf(r);
 			potentialPosition.splice(i, 1);
 		}
 	}
@@ -494,7 +522,7 @@ function setPosition(event) {
 	if (positionDetails.firstChild.id.substring(0, 6) == 'player') {
 		var removePiece = document.getElementById(positionDetails.firstChild.id);
 		if (removePiece.id.substring(8, 12) === 'king') {
-			console.log('game over');
+			matchFinished = true;
 		}
 		removePiece.remove();
 	}
@@ -505,6 +533,9 @@ function setPosition(event) {
 	window.player = togglePlayer(player);
 	getMoves();
 	clearFocus(potentialPosition, beatPosition);
+	if (matchFinished) {
+		nextMatch();
+	}
 }
 
 function getMoves() {
@@ -542,4 +573,21 @@ function clearFocus(potentialPosition, beatPosition) {
 		}
 		beatPosition.splice(0, beatPosition.length);
 	}
+}
+
+function nextMatch() {
+	var playerWonDiv = document.getElementById("playerWon");
+	if (window.player === 'player2') {
+		playerWonDiv.textContent = 'Player 1 won!';
+	} else if (window.player === 'player1') {
+		playerWonDiv.textContent = 'Player 2 won!';
+	}
+	for (var p = 1; p <= 64; p++) {
+        if (document.getElementById(p).firstChild) {
+            document.getElementById(p).firstChild.remove();
+        }
+	}
+	window.moves = 0;
+	window.player = 'player1';
+	window.matchFinished = false;
 }

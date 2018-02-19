@@ -63,6 +63,13 @@ body {
     margin: 8px 16px 0px 0px;
 }
 
+.playerWon {
+    flex: 1; 
+    text-align: left; 
+    margin: 8px 0px 0px 16px;
+    color: #F03434;
+}
+
 .chessboardContent {
     position: relative; 
     width: 600px; 

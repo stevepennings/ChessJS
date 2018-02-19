@@ -1,6 +1,4 @@
 var positionId = 0;
-var player1;
-var player2;
 
 
 function createBoard() {
@@ -17,7 +15,7 @@ function createPositionsGrid() {
     for (var row = 0; row < 8; row++) {
         var vPositions = document.createElement("tr");
         vPositions.setAttribute("id", 'row' + row);
-        for(var column = 0; column < 8; column++) {
+        for (var column = 0; column < 8; column++) {
             var position = document.createElement("td");
             position.style.backgroundColor = "white";
             position.positionId = positionId++;
@@ -35,7 +33,7 @@ function createPositionsGrid() {
                 }
             }
 
-            if(position.positionId % 2 == colorSwitch) {
+            if (position.positionId % 2 == colorSwitch) {
                 position.style.backgroundColor = "#f5f5f5";
             } else {
                 position.style.backgroundColor = "#c2c2c2";
@@ -46,7 +44,7 @@ function createPositionsGrid() {
             // position.innerHTML = positionId;
         }
         positions.appendChild(vPositions);
-    }   
+    }
 }
 
 function createHorizontalIndex() {
@@ -58,7 +56,7 @@ function createHorizontalIndex() {
         // Print position id's for testing
         hIndex.innerHTML = hContent[column];
         horizontalPositions.appendChild(hIndex);
-    }   
+    }
 }
 
 function createVerticalIndex() {
@@ -69,9 +67,17 @@ function createVerticalIndex() {
         // Print position id's for testing
         vIndex.innerHTML = column;
         verticalPositions.appendChild(vIndex);
-    }  
+    }
 }
 
 function resetGame() {
-    console.log('Restart chess game');
+    for (var p = 1; p <= 64; p++) {
+        if (document.getElementById(p).firstChild) {
+            document.getElementById(p).firstChild.remove();
+        }
+    }
+    setPieces();
+    var playerWonDiv = document.getElementById("playerWon");
+    playerWonDiv.textContent = '';
+    console.log('resetted');
 }
